@@ -12,7 +12,8 @@ No Podman, existem dois comportamentos de rede:
 - Liste todas as redes como usuário root:
 
 ```bash
-# podman network ls
+podman network ls
+
 NETWORK ID    NAME        VERSION     PLUGINS
 2f259bab93aa  podman      0.4.0       bridge,portmap,firewall,tuning
 ```
@@ -28,7 +29,8 @@ Exibe o intervalo de IP, plugins habilitados, tipo de rede, etc., para uma rede 
 - Inspecione a rede padrão do Podman:
 
 ```bash
-$ podman network inspect podman
+podman network inspect podman
+
 [
     {
         "cniVersion": "0.4.0",

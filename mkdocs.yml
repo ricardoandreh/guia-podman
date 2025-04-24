@@ -9,7 +9,7 @@ site_description: Guia de boas práticas para o Podman
 
 theme:
   name: material
-  favicon: images/favicon.png
+  favicon: public/favicon.ico
   language: pt-BR
   features:
     - navigation.tabs
@@ -86,14 +86,15 @@ nav:
   - Home: index.md
   - Instalação:
     - Visão Geral: installation/overview.md
-    - Instalando Podman: installation/installation.md
   - Fundamentos:
     - Primeiros Passos: fundamentals/getting-started.md
+    - Containers: fundamentals/containers.md
+    - Imagens: fundamentals/images.md
   - Redes:
     - Redes no Podman: networking/network.md
+    - Portas: networking/ports.md
   - Volumes:
     - Visão Geral: volumes/volumes.md
-    - Persistência de Dados: volumes/persistence.md
   - Avançado:
     - Segurança: advanced/security.md
     - Resolução de Problemas: advanced/troubleshooting.md

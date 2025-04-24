@@ -1,6 +1,4 @@
-# Introdução à Segurança no Podman
-
-O Podman (Pod Manager) é uma ferramenta de contêineres sem daemon que oferece vantagens significativas de segurança em comparação com outras tecnologias de conteinerização. Este documento explora as características de segurança do Podman e como implementá-las efetivamente para proteger seus ambientes conteinerizados.
+# Segurança no Podman
 
 A segurança no Podman se baseia em vários componentes do kernel Linux e em sua arquitetura sem daemon, que reduz a superfície de ataque e proporciona maior isolamento entre os contêineres e o sistema host.
 
@@ -21,10 +19,10 @@ O Podman utiliza um modelo de permissões baseado no usuário:
 
 ```bash
 # Execução como usuário normal (rootless)
-$ podman run -d nginx
+podman run -d nginx
 
 # Execução como root (quando necessário)
-$ sudo podman run -d --privileged nginx
+sudo podman run -d --privileged nginx
 ```
 
 Essa separação de privilégios fortalece a segurança, permitindo operações regulares sem acesso root.
@@ -45,14 +43,14 @@ Para habilitar e utilizar o modo rootless:
 
 ```bash
 # Verificar configuração do sistema
-$ podman system info
+podman system info
 
 # Configurar mapeamento de usuário (se necessário)
-$ sudo usermod --add-subuids 100000-165535 $(whoami)
-$ sudo usermod --add-subgids 100000-165535 $(whoami)
+sudo usermod --add-subuids 100000-165535 $(whoami)
+sudo usermod --add-subgids 100000-165535 $(whoami)
 
 # Reiniciar o serviço de usuário (ou fazer logout/login)
-$ systemctl --user restart podman.socket
+systemctl --user restart podman.socket
 ```
 
 ### Limitações do Modo Rootless
@@ -80,13 +78,13 @@ O Podman utiliza namespaces do kernel Linux para fornecer isolamento entre cont�
 
 ```bash
 # Isolar o namespace PID do host
-$ podman run --pid=host nginx
+podman run --pid=host nginx
 
 # Utilizar namespace de usuário separado
-$ podman run --userns=keep-id nginx
+podman run --userns=keep-id nginx
 
 # Executar contêiner com todos os namespaces isolados
-$ podman run --pid=private --ipc=private --net=private nginx
+podman run --pid=private --ipc=private --net=private nginx
 ```
 
 ## Controles de Recursos
@@ -97,13 +95,13 @@ O Podman permite restringir recursos disponíveis para contêineres, limitando o
 
 ```bash
 # Limitar CPU
-$ podman run --cpus=1.5 --cpu-shares=512 nginx
+podman run --cpus=1.5 --cpu-shares=512 nginx
 
 # Limitar memória
-$ podman run --memory=512m --memory-swap=1g nginx
+podman run --memory=512m --memory-swap=1g nginx
 
 # Limitar E/S de disco
-$ podman run --device-read-bps=/dev/sda:10mb --device-write-bps=/dev/sda:10mb nginx
+podman run --device-read-bps=/dev/sda:10mb --device-write-bps=/dev/sda:10mb nginx
 ```
 
 ### Configurando cgroups
@@ -112,10 +110,10 @@ O Podman utiliza cgroups (control groups) para implementar controles de recursos
 
 ```bash
 # Especificar o controlador cgroup v2
-$ podman run --cgroup-manager=systemd nginx
+podman run --cgroup-manager=systemd nginx
 
 # Definir limite de pids (processos)
-$ podman run --pids-limit=100 nginx
+podman run --pids-limit=100 nginx
 ```
 
 ## SELinux e AppArmor
@@ -126,13 +124,13 @@ O Podman integra-se bem com o SELinux, proporcionando controle de acesso mandat�
 
 ```bash
 # Executar com contexto de SELinux padrão
-$ podman run -v /host/path:/container/path:Z nginx
+podman run -v /host/path:/container/path:Z nginx
 
 # Compartilhar volume entre contêineres (shared label)
-$ podman run -v /host/path:/container/path:z nginx
+podman run -v /host/path:/container/path:z nginx
 
 # Verificar contexto SELinux em volumes
-$ podman inspect --format '{{.Mounts}}' container_id
+podman inspect --format '{{.Mounts}}' container_id
 ```
 
 O modificador `:Z` aplica o contexto SELinux apropriado ao volume, enquanto `:z` aplica um rótulo compartilhado.
@@ -143,10 +141,10 @@ Em sistemas com AppArmor, o Podman pode utilizar perfis para restringir o acesso
 
 ```bash
 # Executar com perfil AppArmor específico
-$ podman run --security-opt apparmor=custom-profile nginx
+podman run --security-opt apparmor=custom-profile nginx
 
 # Desabilitar AppArmor para um contêiner (não recomendado)
-$ podman run --security-opt apparmor=unconfined nginx
+podman run --security-opt apparmor=unconfined nginx
 ```
 
 ## Capabilities do Linux
@@ -157,13 +155,13 @@ As capabilities do Linux permitem um controle fino sobre privilégios, eliminand
 
 ```bash
 # Adicionar capabilities específicas
-$ podman run --cap-add=NET_ADMIN,SYS_TIME nginx
+podman run --cap-add=NET_ADMIN,SYS_TIME nginx
 
 # Remover capabilities específicas
-$ podman run --cap-drop=ALL --cap-add=CHOWN nginx
+podman run --cap-drop=ALL --cap-add=CHOWN nginx
 
 # Listar capabilities padrão
-$ podman run --rm docker.io/alpine grep Cap /proc/self/status
+podman run --rm docker.io/alpine grep Cap /proc/self/status
 ```
 
 ### Capabilities Importantes
@@ -180,10 +178,10 @@ O modo privilegiado deve ser evitado sempre que possível, pois concede acesso q
 
 ```bash
 # Modo privilegiado (use com extrema cautela)
-$ podman run --privileged nginx
+podman run --privileged nginx
 
 # Alternativa mais segura: adicionar apenas capabilities necessárias
-$ podman run --cap-add=NET_ADMIN --device=/dev/net/tun nginx
+podman run --cap-add=NET_ADMIN --device=/dev/net/tun nginx
 ```
 
 ## Imagens e Vulnerabilidades
@@ -194,13 +192,13 @@ A segurança começa com imagens confiáveis e bem mantidas:
 
 ```bash
 # Verificar a origem da imagem
-$ podman pull docker.io/library/nginx
+podman pull docker.io/library/nginx
 
 # Inspecionar a imagem antes de usá-la
-$ podman inspect nginx:latest
+podman inspect nginx:latest
 
 # Usar imagens com tags específicas, evitando "latest"
-$ podman pull nginx:1.21.6-alpine
+podman pull nginx:1.21.6-alpine
 ```
 
 ### Escaneamento de Vulnerabilidades
@@ -209,10 +207,10 @@ O ecossistema do Podman oferece ferramentas para escanear vulnerabilidades:
 
 ```bash
 # Usando Trivy para escanear imagens
-$ trivy image nginx:latest
+trivy image nginx:latest
 
 # Verificando imagem com Clair (via skopeo)
-$ skopeo inspect --format "{{.Name}}" docker://nginx:latest | xargs -I {} clair-scanner {}
+skopeo inspect --format "{{.Name}}" docker://nginx:latest | xargs -I {} clair-scanner {}
 ```
 
 ### Construção Segura de Imagens
@@ -221,7 +219,7 @@ Construa imagens com foco em segurança usando o Buildah (integrado ao Podman):
 
 ```bash
 # Construir com usuário não-root
-$ podman build --build-arg USER=appuser -t minha-app:secure .
+podman build --build-arg USER=appuser -t minha-app:secure .
 
 # Conteúdo do Dockerfile
 FROM alpine:latest
@@ -240,14 +238,14 @@ O Podman oferece várias formas de gerenciar segredos em contêineres:
 
 ```bash
 # Usando variáveis de ambiente (menos seguro)
-$ podman run -e "API_KEY=segredo" nginx
+podman run -e "API_KEY=segredo" nginx
 
 # Usando arquivos montados (mais seguro)
-$ podman run -v /path/to/secret:/run/secrets:ro,Z nginx
+podman run -v /path/to/secret:/run/secrets:ro,Z nginx
 
 # Usando secret mounts (mais recente)
-$ podman secret create db_password password.txt
-$ podman run --secret db_password nginx
+podman secret create db_password password.txt
+podman run --secret db_password nginx
 ```
 
 ### Melhores Práticas para Segredos
@@ -265,13 +263,13 @@ O Podman permite isolar redes entre contêineres:
 
 ```bash
 # Criar rede isolada
-$ podman network create app-network
+podman network create app-network
 
 # Executar contêiner na rede isolada
-$ podman run --network=app-network --name=db postgres
+podman run --network=app-network --name=db postgres
 
 # Conectar contêiner a múltiplas redes
-$ podman network connect another-network db
+podman network connect another-network db
 ```
 
 ### Regras de Firewall
@@ -280,10 +278,10 @@ Controle cuidadosamente a exposição de portas:
 
 ```bash
 # Expor porta apenas em localhost
-$ podman run -p 127.0.0.1:8080:80 nginx
+podman run -p 127.0.0.1:8080:80 nginx
 
 # Evitar expor portas desnecessárias
-$ podman run --network=app-network --expose 5432 postgres
+podman run --network=app-network --expose 5432 postgres
 ```
 
 ### DNS e Resolução de Nomes
@@ -292,10 +290,10 @@ Configure DNS de forma segura:
 
 ```bash
 # Definir servidores DNS específicos
-$ podman run --dns=1.1.1.1 nginx
+podman run --dns=1.1.1.1 nginx
 
 # Adicionar entrada de hosts personalizada
-$ podman run --add-host=myservice:10.10.10.10 nginx
+podman run --add-host=myservice:10.10.10.10 nginx
 ```
 
 ## Melhores Práticas
@@ -309,7 +307,7 @@ $ podman run --add-host=myservice:10.10.10.10 nginx
 
 ```bash
 # Exemplo de contêiner com privilégio mínimo
-$ podman run --read-only \
+podman run --read-only \
   --cap-drop=ALL \
   --cap-add=NET_BIND_SERVICE \
   --user 1000:1000 \
@@ -320,13 +318,13 @@ $ podman run --read-only \
 
 ```bash
 # Sistema de arquivos somente leitura
-$ podman run --read-only nginx
+podman run --read-only nginx
 
 # Desabilitar escalações de privilégio
-$ podman run --security-opt=no-new-privileges nginx
+podman run --security-opt=no-new-privileges nginx
 
 # Usar seccomp para filtrar syscalls
-$ podman run --security-opt seccomp=/path/to/profile.json nginx
+podman run --security-opt seccomp=/path/to/profile.json nginx
 ```
 
 ### Monitoramento e Auditoria
@@ -337,7 +335,7 @@ $ podman run --security-opt seccomp=/path/to/profile.json nginx
 
 ```bash
 # Configurar logging personalizado
-$ podman run --log-driver=journald --log-opt=tag=webapp nginx
+podman run --log-driver=journald --log-opt=tag=webapp nginx
 ```
 
 ## Segurança em Ambientes de Produção
@@ -348,7 +346,7 @@ Para ambientes de produção, implemente estas configurações:
 
 ```bash
 # Contêiner com configurações de segurança para produção
-$ podman run \
+podman run \
   --cap-drop=ALL \
   --cap-add=NET_BIND_SERVICE \
   --security-opt=no-new-privileges \
@@ -367,8 +365,8 @@ $ podman run \
 
 ```bash
 # Atualizar imagens
-$ podman pull nginx:1.21-alpine
-$ podman image prune -a --filter "until=24h"
+podman pull nginx:1.21-alpine
+podman image prune -a --filter "until=24h"
 ```
 
 ## Comparação com Docker
@@ -386,11 +384,11 @@ O Podman oferece vantagens distintas em comparação ao Docker:
 
 ```bash
 # Converter docker-compose para podman
-$ podman-compose -f docker-compose.yml up
+podman-compose -f docker-compose.yml up
 
 # Migrar contêiner Docker para Podman
-$ docker inspect container > container.json
-$ podman import container.json
+docker inspect container > container.json
+podman import container.json
 ```
 
 ## Ferramentas de Segurança
@@ -416,4 +414,46 @@ scan_image() {
     exit 1
   fi
 }
+```
+
+## Rootless Containers
+
+```bash
+# Executar como usuário não-root
+podman run --user 1000:1000 nginx
+
+# Verificar contexto de segurança
+podman run --security-opt label=level:s0:c100,c200 fedora
+```
+
+## SELinux e Apparmor
+
+```bash
+# Executar com perfil SELinux específico
+podman run --security-opt label=type:container_t nginx
+
+# Usar perfil Apparmor
+podman run --security-opt apparmor=custom-profile nginx
+```
+
+## Capabilities
+
+```bash
+# Remover capabilities específicas
+podman run --cap-drop NET_ADMIN nginx
+
+# Adicionar capabilities
+podman run --cap-add SYS_PTRACE nginx
+```
+
+## Boas Práticas
+
+1. Use rootless containers sempre que possível
+2. Limite capabilities ao mínimo necessário
+3. Implemente políticas de SELinux/AppArmor
+4. Atualize imagens regularmente
+5. Escaneie vulnerabilidades:
+
+```bash
+podman image scan nginx:latest
 ```

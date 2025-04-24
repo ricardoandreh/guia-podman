@@ -1,10 +1,10 @@
-# Guia Podman
+# Laboratório Prático
 
-## Laboratório Prático: Implementando e Gerenciando Contêineres com Podman
+**Integrantes**: Gabriel Gomes Galikosky; Mateus Lopes Albano; Paulo José de Oliveira Rolinski; Ricardo André da Silva.
 
-**Integrantes**: Gabriel Gomes Galikosky; Mateus Lopes Albano; Paulo José de Oliveira Rolinski; Ricardo André da Silva
+## Implementando e Gerenciando Contêineres com Podman
 
-Bem-vindo ao Guia Podman! Este guia foi desenvolvido para ajudar você a entender e utilizar o Podman, uma alternativa moderna e segura para gerenciamento de containers.
+Este guia foi desenvolvido para ajudar você a entender e utilizar o Podman, uma alternativa moderna e segura para gerenciamento de containers.
 
 ## O que é o Podman?
 

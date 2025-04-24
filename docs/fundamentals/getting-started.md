@@ -4,19 +4,19 @@
 
 ### Container básico
 
-    ```bash
-    # Baixar imagem
-    podman pull docker.io/nginx:latest
+```bash
+# Baixar imagem
+podman pull docker.io/nginx:latest
 
-    # Executar container em background
-    podman run -d --name meu-nginx -p 8080:80 nginx:latest
+# Executar container em background
+podman run -d --name meu-nginx -p 8080:80 nginx:latest
 
-    # Verificar container em execução
-    podman ps
+# Verificar container em execução
+podman ps
 
-    # Acessar o site no navegador ou curl
-    curl http://localhost:8080
-    ```
+# Acessar o site no navegador ou curl
+curl http://localhost:8080
+```
 
 Explicação de parâmetros:
 
@@ -26,22 +26,22 @@ Explicação de parâmetros:
 
 Saída esperada do comando `podman ps`:
 
-    ```txt
-    CONTAINER ID  IMAGE                           COMMAND               CREATED         STATUS             PORTS                 NAMES
-    3f4a8d0e15c3  docker.io/library/nginx:latest  nginx -g daemon o...  10 seconds ago  Up 9 seconds ago   0.0.0.0:8080->80/tcp  meu-nginx
-    ```
+```txt
+CONTAINER ID  IMAGE                           COMMAND               CREATED         STATUS             PORTS                 NAMES
+3f4a8d0e15c3  docker.io/library/nginx:latest  nginx -g daemon o...  10 seconds ago  Up 9 seconds ago   0.0.0.0:8080->80/tcp  meu-nginx
+```
 
 ### Container interativo
 
-    ```bash
-    # Executar um container interativo
-    podman run -it --rm ubuntu:latest bash
+```bash
+# Executar um container interativo
+podman run -it --rm ubuntu:latest bash
 
-    # Dentro do container, você pode executar comandos como:
-    apt update
-    echo "Estou dentro do container!"
-    exit
-    ```
+# Dentro do container, você pode executar comandos como:
+apt update
+echo "Estou dentro do container!"
+exit
+```
 
 Explicação de parâmetros:
 
@@ -51,115 +51,115 @@ Explicação de parâmetros:
 
 ### Operações com containers
 
-    ```bash
-    # Parar o container
-    podman stop meu-nginx
+```bash
+# Parar o container
+podman stop meu-nginx
 
-    # Iniciar o container novamente
-    podman start meu-nginx
+# Iniciar o container novamente
+podman start meu-nginx
 
-    # Executar comando em container em execução
-    podman exec -it meu-nginx /bin/bash
+# Executar comando em container em execução
+podman exec -it meu-nginx /bin/bash
 
-    # Ver logs do container
-    podman logs meu-nginx
+# Ver logs do container
+podman logs meu-nginx
 
-    # Remover container
-    podman rm -f meu-nginx
-    ```
+# Remover container
+podman rm -f meu-nginx
+```
 
 ## Recursos Avançados do Podman
 
 ### Criando e gerenciando pods
 
-    ```bash
-    # Criar um pod com publicação de portas
-    podman pod create --name webapp-pod -p 8080:80
+```bash
+# Criar um pod com publicação de portas
+podman pod create --name webapp-pod -p 8080:80
 
-    # Adicionar containers ao pod
-    podman run -d --pod webapp-pod --name web-front nginx:latest
-    podman run -d --pod webapp-pod --name api-backend httpd:latest
+# Adicionar containers ao pod
+podman run -d --pod webapp-pod --name web-front nginx:latest
+podman run -d --pod webapp-pod --name api-backend httpd:latest
 
-    # Listar pods
-    podman pod ps
+# Listar pods
+podman pod ps
 
-    # Inspecionar um pod
-    podman pod inspect webapp-pod
+# Inspecionar um pod
+podman pod inspect webapp-pod
 
-    # Parar o pod (para todos os containers)
-    podman pod stop webapp-pod
+# Parar o pod (para todos os containers)
+podman pod stop webapp-pod
 
-    # Iniciar o pod (inicia todos os containers)
-    podman pod start webapp-pod
+# Iniciar o pod (inicia todos os containers)
+podman pod start webapp-pod
 
-    # Remover o pod e seus containers
-    podman pod rm -f webapp-pod
-    ```
+# Remover o pod e seus containers
+podman pod rm -f webapp-pod
+```
 
 ### Container rootless
 
-    ```bash
-    # Verificar seu usuário atual
-    id
+```bash
+# Verificar seu usuário atual
+id
 
-    # Executar container sem privilégios root
-    podman run --rm -it --name rootless-test alpine:latest sh
+# Executar container sem privilégios root
+podman run --rm -it --name rootless-test alpine:latest sh
 
-    # Dentro do container, verificar o usuário
-    id
+# Dentro do container, verificar o usuário
+id
 
-    # Tentar operações privilegiadas (devem falhar)
-    apk add --no-cache tcpdump
-    tcpdump -i eth0
-    ```
+# Tentar operações privilegiadas (devem falhar)
+apk add --no-cache tcpdump
+tcpdump -i eth0
+```
 
 ### Integração com systemd
 
-    ```bash
-    # Gerar arquivo de unidade systemd para o container
-    mkdir -p ~/.config/systemd/user/
-    podman run -d --name web-service -p 8080:80 nginx:latest
-    podman generate systemd --name web-service --files --new
+```bash
+# Gerar arquivo de unidade systemd para o container
+mkdir -p ~/.config/systemd/user/
+podman run -d --name web-service -p 8080:80 nginx:latest
+podman generate systemd --name web-service --files --new
 
-    # Habilitar o serviço
-    systemctl --user daemon-reload
-    systemctl --user enable container-web-service.service
-    systemctl --user start container-web-service.service
+# Habilitar o serviço
+systemctl --user daemon-reload
+systemctl --user enable container-web-service.service
+systemctl --user start container-web-service.service
 
-    # Verificar status
-    systemctl --user status container-web-service.service
+# Verificar status
+systemctl --user status container-web-service.service
 
-    # Parar o serviço
-    systemctl --user stop container-web-service.service
-    ```
+# Parar o serviço
+systemctl --user stop container-web-service.service
+```
 
 ### Construindo imagens com Podman
 
-    ```bash
-    # Criar arquivo Dockerfile
+```bash
+# Criar arquivo Dockerfile
 
-    mkdir podman-build && cd podman-build
-    ```
+mkdir podman-build && cd podman-build
+```
 
-    ```Dockerfile
-    # Dockerfile
+```Dockerfile
+# Dockerfile
 
-    FROM ubuntu:latest
-    RUN apt-get update && apt-get install -y nginx
-    EXPOSE 80
-    CMD ["nginx", "-g", "daemon off;"]
-    ```
+FROM ubuntu:latest
+RUN apt-get update && apt-get install -y nginx
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
 
-    ```bash
-    # Construir imagem
-    podman build -t minha-imagem:latest .
+```bash
+# Construir imagem
+podman build -t minha-imagem:latest .
 
-    # Listar imagens
-    podman images
+# Listar imagens
+podman images
 
-    # Executar container com a imagem criada
-    podman run -d --name meu-app -p 8080:80 minha-imagem:latest
-    ```
+# Executar container com a imagem criada
+podman run -d --name meu-app -p 8080:80 minha-imagem:latest
+```
 
 ## Comparação com Docker (prática)
 
@@ -176,14 +176,14 @@ Explicação de parâmetros:
 
 ### Exemplo de alias para migração de Docker para Podman
 
-    ```bash
-    # Adicionar ao ~/.bashrc ou ~/.zshrc
-    alias docker=podman
+```bash
+# Adicionar ao ~/.bashrc ou ~/.zshrc
+alias docker=podman
 
-    # Testar alias
-    source ~/.bashrc
-    docker ps  # Na realidade executa podman ps
-    ```
+# Testar alias
+source ~/.bashrc
+docker ps  # Na realidade executa podman ps
+```
 
 !!!example annotate "Diferenças importantes observadas"
 
@@ -238,203 +238,203 @@ Neste exemplo prático, implementaremos uma aplicação web com frontend, backen
 
 ### 1. Criar pod para a aplicação
 
-    ```bash
-    podman pod create --name webapp \
-    --publish 8080:80 \
-    --publish 5000:5000 \
-    --publish 5432:5432
-    ```
+```bash
+podman pod create --name webapp \
+--publish 8080:80 \
+--publish 5000:5000 \
+--publish 5432:5432
+```
 
 ### 2. Adicionar banco de dados PostgreSQL
 
-    ```bash
-    podman run -d --pod webapp \
-    --name postgres \
-    -e POSTGRES_PASSWORD=senhasegura \
-    -e POSTGRES_USER=appuser \
-    -e POSTGRES_DB=webapp \
-    -v postgres-data:/var/lib/postgresql/data \
-    postgres:13
-    ```
+```bash
+podman run -d --pod webapp \
+--name postgres \
+-e POSTGRES_PASSWORD=senhasegura \
+-e POSTGRES_USER=appuser \
+-e POSTGRES_DB=webapp \
+-v postgres-data:/var/lib/postgresql/data \
+postgres:16.3-alpine3.20
+```
 
 ### 3. Adicionar API backend
 
-    ```bash
-    # Criar Dockerfile para backend
+```bash
+# Criar Dockerfile para backend
 
-    mkdir -p backend && cd backend
-    ```
+mkdir -p backend && cd backend
+```
 
-    ```Dockerfile
-    # Dockerfile
+```Dockerfile
+# Dockerfile
 
-    FROM python:3.9-slim
-    WORKDIR /app
-    COPY requirements.txt .
-    RUN pip install -r requirements.txt
-    COPY . .
-    CMD ["python", "app.py"]
-    ```
+FROM python:3.9-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["python", "app.py"]
+```
 
-    ```txt
-    # requirements.txt
+```txt
+# requirements.txt
 
-    flask
-    psycopg2-binary
-    flask-cors
-    ```
+flask
+psycopg2-binary
+flask-cors
+```
 
-    ```python
-    # app.py
+```python
+# app.py
 
-    from flask import Flask, jsonify
-    from flask_cors import CORS
-    import os
+from flask import Flask, jsonify
+from flask_cors import CORS
+import os
 
-    app = Flask(__name__)
-    CORS(app)
+app = Flask(__name__)
+CORS(app)
 
-    @app.route('/api/info')
-    def info():
-        return jsonify({"status": "ok", "message": "API running with Podman!"})
+@app.route('/api/info')
+def info():
+    return jsonify({"status": "ok", "message": "API running with Podman!"})
 
-    if __name__ == '__main__':
-        app.run(host='0.0.0.0', port=5000)
-    ```
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+```
 
-    ```bash
-    # Construir e executar backend
+```bash
+# Construir e executar backend
 
-    podman build -t webapp-backend .
-    podman run -d --pod webapp --name backend webapp-backend
-    cd ..
-    ```
+podman build -t webapp-backend .
+podman run -d --pod webapp --name backend webapp-backend
+cd ..
+```
 
 ### 4. Adicionar frontend
 
-    ```bash
-    # Criar Dockerfile para frontend
+```bash
+# Criar Dockerfile para frontend
 
-    mkdir -p frontend && cd frontend
-    ```
-
-    ```Dockerfile
-    # Dockerfile
-
-    FROM nginx:alpine
-    COPY index.html /usr/share/nginx/html/index.html
-    COPY style.css /usr/share/nginx/html/style.css
-    COPY script.js /usr/share/nginx/html/script.js
+mkdir -p frontend && cd frontend
 ```
 
-    ```html
-    <!-- index.html -->
+```Dockerfile
+# Dockerfile
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Podman App Demo</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <div class="container">
-            <h1>Podman Multi-Container App</h1>
-            <div id="status">Checking API status...</div>
-            <button id="checkButton">Check API Status</button>
-        </div>
-        <script src="script.js"></script>
-    </body>
-    </html>
-    ```
+FROM nginx:alpine
+COPY index.html /usr/share/nginx/html/index.html
+COPY style.css /usr/share/nginx/html/style.css
+COPY script.js /usr/share/nginx/html/script.js
+```
 
-    ```css
-    /* style.css */
+```html
+<!-- index.html -->
 
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Podman App Demo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Podman Multi-Container App</h1>
+        <div id="status">Checking API status...</div>
+        <button id="checkButton">Check API Status</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+```
+
+```css
+/* style.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+#status {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+}
+```
+
+```js
+// script.js
+
+document.addEventListener('DOMContentLoaded', function() {
+    const statusDiv = document.getElementById('status');
+    const checkButton = document.getElementById('checkButton');
+    
+    function checkAPI() {
+        statusDiv.textContent = 'Connecting to API...';
+        fetch('http://localhost:5000/api/info')
+            .then(response => response.json())
+            .then(data => {
+                statusDiv.textContent = 'API Status: ' + data.message;
+                statusDiv.style.backgroundColor = '#dff0d8';
+            })
+            .catch(error => {
+                statusDiv.textContent = 'Error connecting to API';
+                statusDiv.style.backgroundColor = '#f2dede';
+                console.error('Error:', error);
+            });
     }
-    .container {
-        max-width: 800px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        text-align: center;
-    }
-    button {
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 20px;
-    }
-    #status {
-        margin: 20px 0;
-        padding: 10px;
-        background-color: #f8f8f8;
-        border-radius: 4px;
-    }
-    ```
+    
+    checkButton.addEventListener('click', checkAPI);
+    
+    // Initial check
+    checkAPI();
+});
+```
 
-    ```js
-    // script.js
+```bash
+# Construir e executar frontend
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const statusDiv = document.getElementById('status');
-        const checkButton = document.getElementById('checkButton');
-        
-        function checkAPI() {
-            statusDiv.textContent = 'Connecting to API...';
-            fetch('http://localhost:5000/api/info')
-                .then(response => response.json())
-                .then(data => {
-                    statusDiv.textContent = 'API Status: ' + data.message;
-                    statusDiv.style.backgroundColor = '#dff0d8';
-                })
-                .catch(error => {
-                    statusDiv.textContent = 'Error connecting to API';
-                    statusDiv.style.backgroundColor = '#f2dede';
-                    console.error('Error:', error);
-                });
-        }
-        
-        checkButton.addEventListener('click', checkAPI);
-        
-        // Initial check
-        checkAPI();
-    });
-    ```
-
-    ```bash
-    # Construir e executar frontend
-
-    podman build -t webapp-frontend .
-    podman run -d --pod webapp --name frontend webapp-frontend
-    cd ..
-    ```
+podman build -t webapp-frontend .
+podman run -d --pod webapp --name frontend webapp-frontend
+cd ..
+```
 
 ### 5. Verificar e testar a aplicação
 
-    ```bash
-    # Listar componentes em execução
-    podman pod ps
-    podman ps --pod webapp
+```bash
+# Listar componentes em execução
+podman pod ps
+podman ps --pod webapp
 
-    # Verificar logs
-    podman logs backend
-    podman logs frontend
+# Verificar logs
+podman logs backend
+podman logs frontend
 
-    # Testar acesso à aplicação
-    echo "Acesse em seu navegador: http://localhost:8080"
-    curl http://localhost:5000/api/info
-    ```
+# Testar acesso à aplicação
+echo "Acesse em seu navegador: http://localhost:8080"
+curl http://localhost:5000/api/info
+```
 
 ## Conclusão
 
