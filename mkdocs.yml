@@ -1,0 +1,68 @@
+site_name: Guia Podman
+site_author: DevOps
+site_url: https://ricardoandreh.github.io/guia-podman
+repo_url: https://github.com/ricardoandreh/guia-podman
+repo_name: ricardoandreh/guia-podman
+copyright: Copyright &copy; 2025 DevOps
+copyright_year: 2025
+site_description: Guia de boas práticas para o Podman
+
+theme:
+  name: material
+  favicon: images/favicon.png
+  language: pt-BR
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.annotation
+    - content.code.copy
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+      primary: indigo
+      accent: purple
+    - scheme: slate 
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode    
+      primary: indigo
+      accent: lime
+
+nav:
+  - Home: index.md
+  - Instalação:
+    - Visão Geral: installation/overview.md
+    - Instalando Podman: installation/installation.md
+  - Fundamentos:
+    - Primeiros Passos: fundamentals/getting-started.md
+    - Containers: fundamentals/containers.md
+    - Imagens: fundamentals/images.md
+  - Redes:
+    - Redes no Podman: networking/network.md
+    - Portas e Exposição: networking/ports.md
+  - Volumes:
+    - Visão Geral: volumes/volumes.md
+    - Persistência de Dados: volumes/persistence.md
+  - Avançado:
+    - Segurança: advanced/security.md
+    - Resolução de Problemas: advanced/troubleshooting.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.arithmatex:
+      generic: true
+  - footnotes
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.mark
