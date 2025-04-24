@@ -57,5 +57,6 @@ Este guia está organizado em seções progressivas, desde conceitos básicos at
 - CPU: 2+ cores
 - RAM: 2GB+ de memória disponível
 - Disco: 10GB+ de espaço livre
-
-
+- Conexão de internet para downloads e atualizações
+- Acesso root ou sudo para instalação e configuração
+- Editor de texto - nano, por exemplo - para edição de arquivos

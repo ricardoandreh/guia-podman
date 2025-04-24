@@ -1,6 +1,4 @@
-# Introdução aos Volumes no Podman
-
-O Podman (POD Manager) é uma ferramenta sem daemon para criar, gerenciar e executar contêineres OCI (Open Container Initiative). Um dos aspectos fundamentais ao trabalhar com contêineres é entender como gerenciar os dados persistentes, e é aí que os volumes entram.
+# Volumes no Podman
 
 Os volumes no Podman fornecem uma maneira de armazenar e acessar dados persistentes entre execuções de contêineres, permitindo separar o ciclo de vida dos dados do ciclo de vida dos contêineres.
 
